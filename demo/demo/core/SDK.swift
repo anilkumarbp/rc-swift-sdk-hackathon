@@ -5,12 +5,14 @@ class SDK {
     
     
     // Set constants for SANDBOX and PRODUCTION servers.
+    static var VERSION = "1.0.0"
     static var RC_SERVER_PRODUCTION: String = "https://platform.ringcentral.com"
     static var RC_SERVER_SANDBOX: String = "https://platform.devtest.ringcentral.com"
     
     // Platform variable, version, and current Subscriptions
     var platform: Platform
     var subscription: Subscription?
+    var client: Client
     
     let server: String
     
@@ -31,12 +33,26 @@ class SDK {
     /// :param: appKey      The appKey of your app
     /// :param: appSecet    The appSecret of your app
     /// :param: server      Choice of PRODUCTION or SANDBOX
-    init(appKey: String, appSecret: String, server: String) {
-        platform = Platform(appKey: appKey, appSecret: appSecret, server: server)
+    
+    
+    // Modified constructor ( no client )
+    
+    convenience init(appKey: String, appSecret: String, server: String) {
+        self.init(appName:"", appVersion:"", appKey: appKey, appSecret: appSecret, server: server)
+    }
+    
+    
+    // Modified constructor ( client included )
+    
+    init(appName:String, appVersion:String, appKey: String, appSecret: String, server: String) {
+        self.client = Client(appName:appName, appVersion:appVersion)
+        println(appName)
+        println(appVersion)
+        platform = Platform(client: self.client, appKey: appKey, appSecret: appSecret, server: server)
         self.server = server
         setVersion()
     }
-    
+
     
     /// Sets version to the version of the current SDK
     private func setVersion() {

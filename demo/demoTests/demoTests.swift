@@ -10,12 +10,12 @@ class demoTests: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        let appKey = "eI3RKs1oSBSY2kReFnviIw"
-        let appSecret = "Gv9DgBZVTkaQNbbyEx-SQQBsnUKECmT5GrmGXbHTmpUQ"
+        let appKey = "MNJx4H4cTR-02_zPnsTJ5Q"
+        let appSecret = "7CJKigzBTzOvzTDPP1-C3AARDYohOlSaCLcvgzpNZUzw"
         rcsdk = SDK(appKey: appKey, appSecret: appSecret, server: SDK.RC_SERVER_SANDBOX)
         platform = rcsdk.getPlatform()
-        let username = "13464448343"
-        let password = "P@ssw0rd"
+        let username = "15856234190"
+        let password = "sandman1!"
         platform.authorize(username, password: password)
     }
     
@@ -25,6 +25,17 @@ class demoTests: XCTestCase {
         sleep(10)
     }
     
+    
+    // test api call 
+    
+//    func tesAPiCall() {
+//        platform.sendRequest(client.createRequest([
+//            "method": "GET",
+//            "url": url,
+//            "query": query
+//            ],server: self.server))
+//
+//    }
     func testA_Sdk() {
         XCTAssertNotEqual(rcsdk.serverVersion, "")
         XCTAssertNotEqual(rcsdk.versionString, "")
@@ -47,63 +58,63 @@ class demoTests: XCTestCase {
         XCTAssertEqual(auth!.ext, "101")
     }
     
-    // fax
-    func testApiCall2() {
-        platform.apiCall([
-            "method": "POST",
-            "url": "/restapi/v1.0/account/~/extension/~/fax",
-            "body": "--Boundary_1_14413901_1361871080888\n" +
-                "Content-Type: application/json\n" +
-                "\n" +
-                "{\n" +
-                "  \"to\":[{\"phoneNumber\":\"13464448343\"}],\n" +
-                "  \"faxResolution\":\"High\",\n" +
-                "  \"sendTime\":\"2013-02-26T09:31:20.882Z\"\n" +
-                "}\n" +
-                "\n" +
-                "--Boundary_1_14413901_1361871080888\n" +
-                "Content-Type: text/plain\n" +
-                "\n" +
-                "Hello, World!\n" +
-                "\n" +
-            "--Boundary_1_14413901_1361871080888--",
-            "headers": ["Content-Type": "multipart/mixed;boundary=Boundary_1_14413901_1361871080888"]
-            ]) {
-                (data, response, error) in
-                println(response)
-                println(error)
-        }
-        sleep(5)
-    }
-    
-    // subscription
-    func testApiCall3() {
-        platform.apiCall([
-            "method": "POST",
-            "url": "/restapi/v1.0/subscription",
-            "body": [
-                "eventFilters": [
-                    "/restapi/v1.0/account/~/extension/~/presence",
-                    "/restapi/v1.0/account/~/extension/~/message-store"
-                ],
-                "deliveryMode": [
-                    "transportType": "PubNub",
-                    "encryption": "false"
-                ]
-            ]
-            ]) {
-                (data, response, error) in
-                println(response)
-                println(error)
-        }
-        sleep(5)
-    }
-    
-    func testSubCall() {
-        var subscription = Subscription(platform: platform)
-        subscription.register()
-        
-    }
+//    // fax
+//    func testApiCall2() {
+//        platform.apiCall([
+//            "method": "POST",
+//            "url": "/restapi/v1.0/account/~/extension/~/fax",
+//            "body": "--Boundary_1_14413901_1361871080888\n" +
+//                "Content-Type: application/json\n" +
+//                "\n" +
+//                "{\n" +
+//                "  \"to\":[{\"phoneNumber\":\"13464448343\"}],\n" +
+//                "  \"faxResolution\":\"High\",\n" +
+//                "  \"sendTime\":\"2013-02-26T09:31:20.882Z\"\n" +
+//                "}\n" +
+//                "\n" +
+//                "--Boundary_1_14413901_1361871080888\n" +
+//                "Content-Type: text/plain\n" +
+//                "\n" +
+//                "Hello, World!\n" +
+//                "\n" +
+//            "--Boundary_1_14413901_1361871080888--",
+//            "headers": ["Content-Type": "multipart/mixed;boundary=Boundary_1_14413901_1361871080888"]
+//            ]) {
+//                (data, response, error) in
+//                println(response)
+//                println(error)
+//        }
+//        sleep(5)
+//    }
+//    
+//    // subscription
+//    func testApiCall3() {
+//        platform.apiCall([
+//            "method": "POST",
+//            "url": "/restapi/v1.0/subscription",
+//            "body": [
+//                "eventFilters": [
+//                    "/restapi/v1.0/account/~/extension/~/presence",
+//                    "/restapi/v1.0/account/~/extension/~/message-store"
+//                ],
+//                "deliveryMode": [
+//                    "transportType": "PubNub",
+//                    "encryption": "false"
+//                ]
+//            ]
+//            ]) {
+//                (data, response, error) in
+//                println(response)
+//                println(error)
+//        }
+//        sleep(5)
+//    }
+//    
+//    func testSubCall() {
+//        var subscription = Subscription(platform: platform)
+//        subscription.register()
+//        
+//    }
     
 //    func testD_RingOut() {
 //        XCTAssertEqual(platform.postRingOut("13464448343", to: "13464448343"), true)

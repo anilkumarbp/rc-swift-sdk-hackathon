@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1B431523931DA1F26A3BA1C9 /* Pods_demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 898BF93C30BB0312F7E6DC82 /* Pods_demo.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		A6197DAB1BAF64E500E59F5A /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BFC8DC1B8250E1006E281E /* Transaction.swift */; };
+		A6197DAC1BAF64E800E59F5A /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BFC8DA1B8250D6006E281E /* Client.swift */; };
 		E004D4EB1B43236000365EA0 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004D4EA1B43236000365EA0 /* CustomCell.swift */; };
 		E010145D1B7A782B004C346F /* SDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01014351B7A782B004C346F /* SDK.swift */; };
 		E010145E1B7A782B004C346F /* Headers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01014371B7A782B004C346F /* Headers.swift */; };
@@ -566,7 +568,9 @@
 				E01014811B7A7F70004C346F /* Headers.swift in Sources */,
 				E01014991B7A7F80004C346F /* Padding.swift in Sources */,
 				E01014A01B7A7F80004C346F /* UInt16Extension.swift in Sources */,
+				A6197DAB1BAF64E500E59F5A /* Transaction.swift in Sources */,
 				E01014891B7A7F80004C346F /* ArrayExtension.swift in Sources */,
+				A6197DAC1BAF64E800E59F5A /* Client.swift in Sources */,
 				E010149B1B7A7F80004C346F /* PKCS7.swift in Sources */,
 				E01014861B7A7F75004C346F /* SDK.swift in Sources */,
 				E010148F1B7A7F80004C346F /* CRC.swift in Sources */,

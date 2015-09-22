@@ -1,4 +1,4 @@
-import Foundation
+    import Foundation
 
 /// Authorization object for the platform.
 class Auth {
@@ -49,6 +49,15 @@ class Auth {
         self.password = password
         self.ext = ext
     }
+    
+    
+    
+//    // Modified setData()
+//    func setData(data: [String: AnyObject]){
+//            if
+//    }
+    
+    
     
     // PROBLEM: cannot get "scope" to work as inteded according to API
     //          does not work on API explorer either

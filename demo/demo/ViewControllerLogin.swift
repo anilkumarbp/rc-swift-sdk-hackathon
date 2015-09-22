@@ -26,7 +26,7 @@ class ViewControllerLogin: UIViewController {
     @IBAction func login(sender: AnyObject) {
         
         
-        var rcsdk = SDK(appKey: keyBox.text, appSecret: secretBox.text, server: SDK.RC_SERVER_SANDBOX)
+        var rcsdk = SDK(appName: "Demo", appVersion:"1.0.0", appKey: keyBox.text, appSecret: secretBox.text, server: SDK.RC_SERVER_SANDBOX)
         var platform = rcsdk.getPlatform()
         self.platform = platform
         platform.authorize(userBox.text, password: passBox.text)
