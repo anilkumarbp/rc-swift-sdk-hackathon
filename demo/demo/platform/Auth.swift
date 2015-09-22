@@ -292,5 +292,8 @@ class Auth {
     func getExtension() -> String {
         return self.ext
     }
+    func getTokenType() -> String {
+        return self.token_type!
+    }
     
 }

@@ -47,13 +47,25 @@ class Client {
         task.resume()
     }
     
+    // New Client.send
+    func send1(request: NSMutableURLRequest, completion: (transaction: Transaction) -> Void) {
+        var trans = Transaction(request: request)
+        var task: NSURLSessionDataTask = NSURLSession.sharedSession().dataTaskWithRequest(request) {
+            (data, response, error) in
+            trans.setData(data)
+            trans.setResponse(response)
+            trans.setError(error)
+        }
+        task.resume()
+    }
+    
     func sendMock(request: NSMutableURLRequest, completion: (transaction: Transaction) -> Void) {
         
     }
     
     // Modified create request
     
-    func createRequest(method: String, url: String, options: [String: AnyObject], headers:[String: AnyObject]) -> NSMutableURLRequest {
+    func createRequest(method: String, url: String, options: [String: AnyObject], headers:[String: AnyObject], server:String) -> NSMutableURLRequest {
         
         // URL api call for getting token
 //        let url = NSURL(string: server + "/restapi/oauth/token")
@@ -65,7 +77,7 @@ class Client {
         var auth=""
         
         // URL api call for getting token
-        let url = NSURL(string: "" + url)   // UPDATE the server variable
+        let url = NSURL(string: server + url)   // UPDATE the server variable
         
         // Setting up User info for parsing
         if let g = options["grant_type"] as? String {
@@ -88,16 +100,56 @@ class Client {
 
         // Setting up HTTP request
         let request = NSMutableURLRequest(URL: url!)
-        request.HTTPMethod = "POST"
+        request.HTTPMethod = method
         request.HTTPBody = bodyString.dataUsingEncoding(NSUTF8StringEncoding)
         request.setValue("application/x-www-form-urlencoded;charset=UTF-8", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
+        let token = headers["Authorize"] as? Bool
+        if token == true {
         request.setValue("Basic" + " " + auth, forHTTPHeaderField: "Authorization")
+        }
+        else {
+        request.setValue("Basic" + " " + auth, forHTTPHeaderField: "Authorization")    
+        }
+        
         
 
         return request
     }
     
+    // Modified Create Request newest
+    func createRequest1(options: [String: AnyObject], server:String)-> Request {
+        
+        var method = ""
+        var url = ""
+        var headers: [String: String] = ["": ""]
+        var query: [String: String]?
+        var body: AnyObject = ""
+        if let m = options["method"] as? String {
+            method = m
+        }
+        if let u = options["url"] as? String {
+            url = server + u
+        }
+        if let h = options["headers"] as? [String: String] {
+            headers = h
+        }
+        if let q = options["query"] as? [String: String] {
+            query = q
+        }
+        if let b = options["body"] {
+            if let check = b as? NSDictionary {
+                body = check
+            } else {
+                body = b as! String
+            }
+        }
+        var request = Request(method: method, url: url, headers: headers, query: query, body: body)
+      
+        return request
+        
+    }
+
     // Modified parseProperties 
     
 //    func parseProperties(method: String, url: String, query: [String: String]?, body: AnyObject, headers: [String: String]) -> Array {

@@ -73,7 +73,10 @@ class Request: Headers {
         self.query = query
     }
     
-    func send() {
+    func send() -> NSMutableURLRequest {
+        
+//        let sendRequest: NSMutableURLRequest
+        
         var bodyString: String
         
         if let check = body as? String {
@@ -98,12 +101,15 @@ class Request: Headers {
             for key in list.keys {
                 request.setValue(list[key], forHTTPHeaderField: key)
             }
-            var task: NSURLSessionDataTask = NSURLSession.sharedSession().dataTaskWithRequest(request)
-            task.resume()
+           
+//            var task: NSURLSessionDataTask = NSURLSession.sharedSession().dataTaskWithRequest(request)
+//            task.resume()
         }
+    
+        return request
     }
     
-    func send(completion: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+    func send(completion: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) -> NSMutableURLRequest {
         var bodyString: String
         
         if let check = body as? String {
@@ -131,11 +137,11 @@ class Request: Headers {
             for key in list.keys {
                 request.setValue(list[key], forHTTPHeaderField: key)
             }
-            var task: NSURLSessionDataTask = NSURLSession.sharedSession().dataTaskWithRequest(request) {
-                (data2, response2, error2) in
-                completion(data: data2, response: response2, error: error2)
-            }
-            task.resume()
+//            var task: NSURLSessionDataTask = NSURLSession.sharedSession().dataTaskWithRequest(request) {
+//                (data2, response2, error2) in
+//                completion(data: data2, response: response2, error: error2)
+//            }
+//            task.resume()
         }
     }
     

@@ -59,7 +59,8 @@ class Platform {
     /// :param: password    The password of the RingCentral account
     func login(username: String, ext: String, password: String, remember: Bool = true) {
         
-        let response = requestToken(self.TOKEN_ENDPOINT,options: [
+//        let authHolder = Auth(username: username, ext: ext, password: password, server: self.server)
+        let response = requestToken(self.TOKEN_ENDPOINT, options: [
             "grant_type": password,
             "username": username,
             "extension": ext,
@@ -67,7 +68,7 @@ class Platform {
             "acess_token_ttl": self.ACCESS_TOKEN_TTL,
             "refresh_token_ttl": self.REFRESH_TOKEN_TTL
             ])
-        let authHolder = Auth(username: username, ext: ext, password: password, server: self.server)
+//        let authHolder = Auth(username: username, ext: ext, password: password, server: self.server)
 //        let feedback = authHolder.login(appKey, secret: appSecret)
 //        if (response.1 as! NSHTTPURLResponse).statusCode / 100 == 2 {
 //            self.auth = authHolder
@@ -78,62 +79,26 @@ class Platform {
     // Modified requestToken Method()
     
     func requestToken(path:String,options: [String: AnyObject]){
-//        var grant=""
-//        var username=""
-//        var password=""
-//        var ext=""
-//        // URL api call for getting token
-//        let url = NSURL(string: server + path)
-//        
-//        // Setting up User info for parsing
-//        if let g = options["grant_type"] as? String {
-//            grant = g
-//        }
-//        if let u = options["username"] as? String {
-//            username = u
-//        }
-//        if let p = options["password"] as? String {
-//            password = p
-//        }
-//        if let e = options["extension"] as? String {
-//            ext = e
-//        }
-//        let bodyString = "grant_type=" + grant + "&" + "username=" + username + "&" + "password=" + password + "&" + "extension=" + ext
-        
+ 
         let plainData = (self.appKey + ":" + self.appSecret as NSString).dataUsingEncoding(NSUTF8StringEncoding)
         let base64String = plainData!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
         
         
         let headers:[String: AnyObject] = [
             "Authorization":base64String,
-            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            "Authorize": true
         ]
         
         // createRequest()
         
-        let request = self.client.createRequest("POST", url: path, options: options, headers: headers)
+        let request = self.client.createRequest("POST", url: path, options: options, headers: headers, server:self.server )
         
         return self.sendRequest(request)
         
     }
     
-    // Modified sendRequest
-    func sendRequest(request:NSMutableURLRequest) {
-        
-//        inflateRequest(request)
-        
-        // To do ( send from client)
-        return self.client.send(inflateRequest(request),)
-        
-    }
     
-    // Modified inflateRequest()
-    // Adding Authorization Header
-    
-    func inflateRequest(request:NSMutableURLRequest){
-        request.setHead("Authorization", value: "Bearer" + " " + auth!.getAccessToken())
-    }
-
     
     /// Authorizes the user with the correct credentials (with extra ext)
     ///
@@ -191,8 +156,48 @@ class Platform {
     func notAuthorized() {
         
     }
-
     
+    // Modified inflateRequest()
+    // Adding Authorization Header
+    
+    func inflateRequest(request:Request) -> NSMutableURLRequest {
+        
+        request.setHeader("Authorization", value: "Bearer" + " " + auth!.getAccessToken())
+        request.send()
+    }
+    
+
+
+    // Modified sendRequest
+    func sendRequest(request:Request) {
+        
+        if (auth != nil) {
+            if (auth!.authenticated != true) {
+                if auth!.refreshing {
+                    sleep(1)
+                } else {
+                    auth!.refresh()
+                }
+            }
+        } else {
+            return
+        }
+        
+        if (auth?.authenticated != true) {
+            return
+        }
+        
+        
+        //        inflateRequest(request)
+        
+        // To do ( send from client)
+        return self.client.send(inflateRequest(request)) {
+            (data, response, error) in
+            completion(data: data, response: response, error: error)
+        }
+        
+    }
+
     
     
     // Generic Method Calls
@@ -205,14 +210,13 @@ class Platform {
             ])
     }
     // Modified get
-    func get1(url: String, query: [String: String] = ["": ""], headers: [String: String] = ["": ""], options: [String: AnyObject]) {
-        sendRequest(self.client.createRequest([
-            "method": "GET",
+    func get1(url: String, query: [String: String] = ["": ""]) {
+        sendRequest(self.client.createRequest1(["method": "GET",
             "url": url,
             "query": query
-            ],server: self.server))
+            ],server:self.server))
     }
-    
+//    createRequest("POST", url: path, options: options, headers: headers, server:self.server )
     func put(url: String, body: String = "") {
         apiCall([
             "method": "PUT",
