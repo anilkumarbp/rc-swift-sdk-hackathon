@@ -103,6 +103,7 @@ class Platform {
         let plainData = (self.appKey + ":" + self.appSecret as NSString).dataUsingEncoding(NSUTF8StringEncoding)
         let base64String = plainData!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
         
+        
         let headers:[String: AnyObject] = [
             "Authorization":base64String,
             "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
@@ -130,7 +131,7 @@ class Platform {
     // Adding Authorization Header
     
     func inflateRequest(request:NSMutableURLRequest){
-        request.setHeader("Authorization", value: "Bearer" + " " + auth!.getAccessToken())
+        request.setHead("Authorization", value: "Bearer" + " " + auth!.getAccessToken())
     }
 
     

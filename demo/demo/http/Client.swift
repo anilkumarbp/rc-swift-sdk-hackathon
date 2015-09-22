@@ -62,8 +62,10 @@ class Client {
         var username=""
         var password=""
         var ext=""
+        var auth=""
+        
         // URL api call for getting token
-        let url = NSURL(string: server + path)
+        let url = NSURL(string: "" + url)   // UPDATE the server variable
         
         // Setting up User info for parsing
         if let g = options["grant_type"] as? String {
@@ -78,6 +80,10 @@ class Client {
         if let e = options["extension"] as? String {
             ext = e
         }
+        // setting up the Authorization header
+        if let a = headers["Authorization"] as? String {
+            auth = a
+        }
         let bodyString = "grant_type=" + grant + "&" + "username=" + username + "&" + "password=" + password + "&" + "extension=" + ext
 
         // Setting up HTTP request
@@ -86,7 +92,7 @@ class Client {
         request.HTTPBody = bodyString.dataUsingEncoding(NSUTF8StringEncoding)
         request.setValue("application/x-www-form-urlencoded;charset=UTF-8", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
-        request.setValue("Basic" + " " + base64String, forHTTPHeaderField: "Authorization")
+        request.setValue("Basic" + " " + auth, forHTTPHeaderField: "Authorization")
         
 
         return request

@@ -48,14 +48,63 @@ class Auth {
         self.username = username
         self.password = password
         self.ext = ext
+        self.reset()
     }
     
     
+    // to reset the auth information
     
-//    // Modified setData()
-//    func setData(data: [String: AnyObject]){
-//            if
-//    }
+    func reset() {
+        self.token_type = ""
+        self.access_token = ""
+        self.expires_in = 0
+        self.refresh_token = ""
+        self.refresh_token_expires_in = 0
+        self.scope = ""
+        self.owner_id = ""
+
+    }
+    
+    
+    // Modified setData()
+    func setData(data: [String: AnyObject]){
+        
+        // Misc
+        let time = NSDate().timeIntervalSince1970
+        if let token_type = data["token_type"] as? String {
+            self.token_type = token_type
+        }
+        if let owner_id = data["owner_id"] as? String {
+            self.owner_id = owner_id
+        }
+        if let scope = data["scope"] as? String {
+            self.scope = scope
+        }
+        // Access Token
+        if let access_token = data["access_token"] as? String {
+            self.access_token = access_token
+        }
+        if let expires_in = data["expires_in"] as? Double {
+            self.expires_in = expires_in
+        }
+        
+        if let expire_time = data["expire_time"] as? String {
+            self.expire_time = time + self.expires_in
+        }
+        
+        // Refresh Token
+        if let refresh_token = data["refresh_token"] as? String {
+            self.refresh_token = refresh_token
+        }
+        if let refresh_token_expires_in = data["refresh_token_expires_in"] as? Double {
+            self.refresh_token_expires_in = refresh_token_expires_in
+        }
+        
+        if let refresh_token_expire_time = data["refresh_token_expire_time"] as? String {
+            self.refresh_token_expire_time = time + self.refresh_token_expires_in
+        }
+        
+    }
     
     
     
